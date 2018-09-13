@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+</head>
+
+<body class="layui-anim layui-anim-upbit">
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe9aa;</i></a>
+</div>
+<!-----------------------中间内容区域start-------------------------->
+<div id="w-body" style="margin-left: 3%;margin-right: 3%">
+<blockquote class="layui-elem-quote" style="margin-top: 3%">欢迎管理员：
+    <span id="user_role" style="color: red"></span>！登录时间：<span id="newdate"></span></blockquote>
+<div class="layui-row layui-col-space10 demo-list">
+    <div id="echart_one" class="layui-col-sm4 layui-col-md3 layui-col-lg2" style="width:400px; height: 400px;"></div>
+    <div id="echart_two" class="layui-col-sm4 layui-col-md3 layui-col-lg2" style="width:400px; height: 400px;"></div>
+    <div id="echart_three" class="layui-col-sm4 layui-col-md3 layui-col-lg2" style="width:400px; height: 400px;"></div>
+    <div id="echart_foure" class="layui-col-sm4 layui-col-md3 layui-col-lg2" style="width:400px; height: 400px;"></div>
+</div>
+</div>
+<!-----------------------中间内容区域end-------------------------->
+</body>
+<script src="../layui-v2.3.0/layui/layui.all.js"></script>
+<script type="application/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/echarts.min.js"></script>
+<script src="../layer-v3.1.1/layer/layer.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        getEcharData();
+        getLoginUser();
+        getNowDate();
+    });
+    function getLoginUser() {
+        $.get("getLoginUser",function (LoginUser) {
+            console.log(LoginUser);
+            var user = JSON.parse(JSON.stringify(LoginUser));
+            console.log(user.user_name);
+            document.getElementById("user_role").innerHTML=user.user_name;
+            $("#user_role").val(user.user_name);
+        })
+
+    }
+    function getNowDate() {
+        var date = new Date();
+        var sign1 = "-";
+        var sign2 = ":";
+        var year = date.getFullYear() ;// 年
+        var month = date.getMonth() + 1; // 月
+        var day  = date.getDate(); // 日
+        var hour = date.getHours(); // 时
+        var minutes = date.getMinutes(); // 分
+        var seconds = date.getSeconds(); //秒
+        var weekArr = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天'];
+        var week = weekArr[date.getDay()-1];
+        // 给一位数数据前面加 “0”
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (day >= 0 && day <= 9) {
+            day = "0" + day;
+        }
+        if (hour >= 0 && hour <= 9) {
+            hour = "0" + hour;
+        }
+        if (minutes >= 0 && minutes <= 9) {
+            minutes = "0" + minutes;
+        }
+        if (seconds >= 0 && seconds <= 9) {
+            seconds = "0" + seconds;
+        }
+        var currentdate = year + sign1 + month + sign1 + day + " " + hour + sign2 + minutes + sign2 + seconds + " " + week;
+        document.getElementById("newdate").innerHTML=currentdate;
+        setTimeout('getNowDate()',1);
+    }
+    function getEcharData() {
+        $.post("/user/getUserInfoNum",function (data) {
+            console.log(data);
+            initEchart(data);
+        });
+
+    }
+    function initEchart(data) {
+        var echart_one = echarts.init(document.getElementById("echart_one"));
+        //指定图标的配置和数据
+         option = {
+            title:{
+                text:'Echart 用户爱好统计'
+            },
+            tooltip: {},
+            legend:{
+                data:['人数']
+            },
+            xAxis:{
+                type: 'category',
+                data:['健身', '游戏', '旅游', '购物', '看电影', '休息']
+            },
+            yAxis:{
+                type: 'value'
+            },
+            series:[{
+                name:'人数',
+                type:'bar',
+                data:data,
+            }]
+        };
+        //使用制定的配置项和数据显示图表
+        echart_one.setOption(option);
+        var echart_two = echarts.init(document.getElementById("echart_two"));
+        //指定图标的配置和数据
+        option = {
+            title:{
+                text:'Echart 用户爱好统计'
+            },
+            tooltip: {},
+            legend:{
+                data:['人数']
+            },
+            xAxis:{
+                type: 'category',
+                data:['健身', '游戏', '旅游', '购物', '看电影', '休息']
+            },
+            yAxis:{
+                type: 'value'
+            },
+            series:[{
+                name:'人数',
+                type:'line',
+                data:data,
+            }]
+        };
+        //使用制定的配置项和数据显示图表
+        echart_two.setOption(option);
+        var echart_three = echarts.init(document.getElementById("echart_three"));
+        //指定图标的配置和数据
+        option = {
+            title:{
+                text:'Echart 用户爱好统计'
+            },
+            tooltip: {},
+            legend:{
+                data:['人数']
+            },
+            xAxis:{
+                type: 'category',
+                data:['健身', '游戏', '旅游', '购物', '看电影', '休息']
+            },
+            yAxis:{
+                type: 'value'
+            },
+            series:[{
+                name:'人数',
+                type:'line',
+                data:data,
+            }]
+        };
+        //使用制定的配置项和数据显示图表
+        echart_three.setOption(option);
+        var echart_foure = echarts.init(document.getElementById("echart_foure"));
+        //指定图标的配置和数据
+        option = {
+            title:{
+                text:'Echart 用户爱好统计'
+            },
+            tooltip: {},
+            legend:{
+                data:['人数']
+            },
+            xAxis:{
+                type: 'category',
+                data:['健身', '游戏', '旅游', '购物', '看电影', '休息']
+            },
+            yAxis:{
+                type: 'value'
+            },
+            series:[{
+                name:'人数',
+                type:'line',
+                data:data,
+            }]
+        };
+        //使用制定的配置项和数据显示图表
+        echart_foure.setOption(option);
+    }
+</script>
+</html>

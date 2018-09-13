@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wry_springboot.dao.IndexDao" >
+ <select id="getUserRoles" resultType="com.example.wry_springboot.index.db.entity.RoleEntity">
+      select * from db_user where user_id=#{user_id}
+ </select>
+    <select id="getUserByName" resultType="com.example.wry_springboot.index.db.entity.IndexEntity">
+      select * from db_user where user_name=#{user_name}
+ </select>
+    <insert id="doregister" parameterType="com.example.wry_springboot.index.db.entity.IndexEntity">
+        insert into db_user (user_name,user_pwd) values (#{user_name},#{user_pwd})
+    </insert>
+</mapper>

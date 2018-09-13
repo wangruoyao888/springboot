@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Antd</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script src="../layui-v2.3.0/layui/layui.all.js"></script>
+    <script src="../layui-v2.3.0/layui/layui.js"></script>
+    <script src="../layer-v3.1.1/layer/layer.js"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<body class="layui-anim layui-anim-upbit">
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe9aa;</i></a>
+</div>
+<div style="margin-left: 3%;margin-right: 3%">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>lay-ui表格</legend>
+    </fieldset>
+<table class="layui-table" lay-data="{width: '950', height:'180', url:'/user/getfile', page:true, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+        <th lay-data="{field:'file_view'}">预览</th>
+        <th lay-data="{field:'file_name'}">文件名</th>
+        <th lay-data="{field:'file_path'}">文件地址</th>
+        <th lay-data="{field:'file_src'}">下载</th>
+    </tr>
+    </thead>
+</table>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>js  $.template模板方法制作表格</legend>
+    </fieldset>
+    <table class="layui-table"  >
+        <thead>
+        <tr>
+            <th >预览</th>
+            <th >文件名</th>
+            <th >文件地址</th>
+            <th >下载</th>
+        </tr>
+        </thead>
+        <tbody id="file">
+
+        </tbody>
+    </table>
+</div>
+</body>
+<script src="../layui-v2.3.0/layui/layui.all.js"></script>
+<script src="../layer-v3.1.1/layer/layer.js"></script>
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            type:"get",
+            url:"/user/getfile1",
+            dataType:"json",
+            success:function (data) {
+                console.log("111");
+                console.log(data);
+                var markup =" <tr>\n"+
+                    "               <td>\n<img src=${file_view}> \n</td>\n" +
+                    "               <td>\n${file_name}\n</td>\n" +
+                    "               <td>\n${file_path}\n</td>\n" +
+                    "               <td>\n<a href=${file_src} class='layui-btn layui-btn-primary layui-btn-xs'>下载</a>\n</td>\n" +
+                    "               </tr>";
+                $.template( "movieTemplate", markup );
+
+                $.tmpl("movieTemplate",data).appendTo("#file")
+            }
+        })
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            ,getCheckLength: function(){ //获取选中数目
+                var checkStatus = table.checkStatus('idTest')
+                    ,data = checkStatus.data;
+                layer.msg('选中了：'+ data.length + ' 个');
+            }
+            ,isAll: function(){ //验证是否全选
+                var checkStatus = table.checkStatus('idTest');
+                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            }
+        };
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</html>

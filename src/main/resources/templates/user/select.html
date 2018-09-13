@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+</head>
+
+<body class="layui-anim layui-anim-upbit">
+    <!-----------------------中间内容区域start-------------------------->
+    <div class="layui-form layui-form-pane" style="width: 70% ;margin-top: 5% ; margin-left: 2%" >
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">范围</label>
+                <div class="layui-input-inline " style="width: 100px;">
+                    <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid">-</div>
+                <div class="layui-input-inline" style="width: 100px;">
+                    <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">分组选择框</label>
+                <div class="layui-input-inline">
+                    <select name="quiz">
+                        <option value="">请选择问题</option>
+                        <optgroup label="城市记忆">
+                            <option value="你工作的第一个城市">你工作的第一个城市</option>
+                        </optgroup>
+                        <optgroup label="学生时代">
+                            <option value="你的工号">你的工号</option>
+                            <option value="你最喜欢的老师">你最喜欢的老师</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">搜索选择框</label>
+                <div class="layui-input-inline">
+                    <select name="modules" lay-verify="required" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                        <option value="1">layer</option>
+                        <option value="2">form</option>
+                        <option value="3">layim</option>
+                        <option value="4">element</option>
+                        <option value="5">laytpl</option>
+                        <option value="6">upload</option>
+                        <option value="7">laydate</option>
+                        <option value="8">laypage</option>
+                        <option value="9">flow</option>
+                        <option value="10">util</option>
+                        <option value="11">code</option>
+                        <option value="12">tree</option>
+                        <option value="13">layedit</option>
+                        <option value="14">nav</option>
+                        <option value="15">tab</option>
+                        <option value="16">table</option>
+                        <option value="17">select</option>
+                        <option value="18">checkbox</option>
+                        <option value="19">switch</option>
+                        <option value="20">radio</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">联动选择框</label>
+            <div class="layui-input-inline">
+                <select name="quiz1" id="quiz1"  lay-filter="base">
+                    <option value="">请选择省</option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="quiz2" id="quiz2">
+                    <option value="">请先选择省</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">复选框</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="write_checkbox" id="write_checkbox" title="写作" value="write">
+                <input type="checkbox" name="read_checkbox" id="read_checkbox" title="阅读" value="read">
+                <input type="checkbox" name="game_checkbox" id="game_checkbox" title="游戏" value="game">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">开关-默认关</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="switch_check" id="switch_check" lay-skin="switch" lay-text="ON|OFF" value="open">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="男" title="男" checked="">
+                <input type="radio" name="sex" value="女" title="女">
+                <input type="radio" name="sex" value="禁" title="禁用" disabled="">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">日期选择</label>
+                <div class="layui-input-block">
+                    <input type="text" name="date" id="date1" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">行内表单</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="number" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submit()">立即提交</button>
+                <button  class="layui-btn layui-btn-primary" onclick="test_check()">验证</button>
+            </div>
+        </div>
+
+    </div>
+    <!-----------------------中间内容区域end-------------------------->
+</body>
+<script src="../layui-v2.3.0/layui/layui.all.js"></script>
+<script type="application/javascript" src="../js/jquery.min.js"></script>
+<script src="../layer-v3.1.1/layer/layer.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        layui.use([ 'laydate'], function(){
+            var form = layui.form
+                ,laydate = layui.laydate;
+            //日期
+            laydate.render({
+                elem: '#date1'
+            });
+
+        });
+        fuzhi();
+
+    });
+
+    function submit() {
+        alert("复选框值"+getChackbox());
+        alert("开关值"+getSwitch());
+        alert("日期"+document.getElementById("date1").value);
+    }
+    function getChackbox() {
+        var write_checkbox = document.getElementById("write_checkbox");
+        if (write_checkbox.checked){
+            console.log(document.getElementById("write_checkbox").value);
+            return document.getElementById("write_checkbox").value;
+        }else {
+            return null;
+        }
+    }
+    function getSwitch() {
+        var switch_check = document.getElementById("switch_check");
+        if (switch_check.checked){
+            console.log(document.getElementById("switch_check").value);
+            return document.getElementById("switch_check").value;
+        }else {
+            return "close";
+        }
+    }
+    function test_check() {
+        console.log(getChackbox());
+        console.log(getSwitch());
+    }
+
+    function fuzhi() {
+        $.get("/user/getsheng",function (data) {
+           var mydata= JSON.parse(data);
+           for( var item in mydata){
+               $("#quiz1").append('<option value="'+mydata[item].pid+'" >'+mydata[item].sheng_name+'</option>');
+           }
+         layui.use(['layer','form'], function () {
+             var form = layui.form;
+             form.render();
+         })
+
+        });
+
+    }
+    layui.use(['form','util'] , function () {
+        var form =layui.form;
+        form.on('select(base)',function (data) {
+            var base =data.value;
+            $.post("/user/getshi",{"sheng_id":base},function (data) {
+                $("#quiz2").html($("#quiz2 option:lt(1)"));
+                var mydata= JSON.parse(data);
+                for( var item in mydata){
+                    $("#quiz2").append('<option value="'+mydata[item].shi_id+'" >'+mydata[item].shi_name+'</option>');
+                }
+                    form.render();
+            })
+        })
+    })
+</script>
+</html>

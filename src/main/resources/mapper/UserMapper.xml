@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wry_springboot.dao.UserDao" >
+    <sql id="BASE_TABLE">
+    db_user
+  </sql>
+    <sql id="BASE_COLUMN">
+    user_id,user_name,user_info,user_img,user_pwd
+  </sql>
+    <select id="getAllUser" resultType="com.example.wry_springboot.user.db.entity.UserEntity">
+        select user_id,user_name,user_info,user_img,user_pwd,user_role from db_user order by user_id
+    </select>
+    <select id="QueryGetAllUser" resultType="com.example.wry_springboot.user.db.entity.UserEntity">
+        select user_id,user_name,user_info,user_img,user_pwd from db_user
+    </select>
+    <select id="getUserById" resultType="com.example.wry_springboot.user.db.entity.UserEntity">
+        select user_name,user_info,user_img,user_pwd from db_user where user_id = #{id}
+    </select>
+    <delete id="delUser" parameterType="com.example.wry_springboot.user.db.entity.UserEntity">
+        delete  from db_user where user_id = #{id}
+    </delete>
+    <insert id="addUser" parameterType="com.example.wry_springboot.user.db.entity.UserEntity">
+        insert into db_user (user_name,user_pwd) VALUES (#{user_name},#{user_pwd})
+    </insert>
+    <update id="updataUser" parameterType="com.example.wry_springboot.user.db.entity.UserEntity">
+        update db_user set user_name=#{user_name},user_pwd=#{user_pwd} ,user_info=#{user_info}where user_id = #{user_id}
+    </update>
+    <select id="search" resultType="com.example.wry_springboot.user.db.entity.UserEntity">
+        select user_id,user_name,user_info,user_img,user_pwd from db_user where user_name like CONCAT('%',#{user_name},'%')
+    </select>
+    <select id="getUserInfoNum" resultType="Integer">
+        select info_num from db_user_info
+    </select>
+    <insert id="insertFile" parameterType="com.example.wry_springboot.user.db.entity.UserEntity">
+        insert into db_user (user_img) VALUES (#{path})
+    </insert>
+    <delete id="delquery" parameterType="java.util.List">
+        delete from db_user where user_id in
+        <foreach collection="list" item="id"
+                 open="(" close=")" index="index" separator=",">
+            #{user_id}
+        </foreach>
+    </delete>
+    <select id="getsheng" resultType="com.example.wry_springboot.user.db.entity.shengEntity">
+        select pid ,sheng_name from db_sheng_local
+    </select>
+    <select id="getshi" resultType="com.example.wry_springboot.user.db.entity.shiEntity">
+        select shi_id ,shi_name,sheng_id from db_shi_local where sheng_id = #{id}
+    </select>
+    <insert id="uploadfile" parameterType="com.example.wry_springboot.user.db.entity.FileEntity">
+        insert into db_file (file_name,file_path,file_src,file_view) VALUES (#{file_name},#{file_path},#{file_src},#{file_view})
+    </insert>
+    <insert id="uploadfileh" parameterType="com.example.wry_springboot.user.db.entity.FileEntity">
+        insert into db_file_h (file_name,file_path,file_src,file_view) VALUES (#{file_name},#{file_path},#{file_src},#{file_view})
+    </insert>
+    <select id="getfile" resultType="com.example.wry_springboot.user.db.entity.FileEntity">
+        select file_name ,file_path,file_src,file_view from db_file
+    </select>
+    <select id="getfile1" resultType="com.example.wry_springboot.user.db.entity.FileEntity">
+        select file_name ,file_path,file_src,file_view from db_file_h
+    </select>
+    <select id="getUserCount" resultType="Integer">
+        select count(user_id) from db_user
+    </select>
+    <update id="in" parameterType="com.example.wry_springboot.user.db.entity.lineEntity">
+        update db_user_info set info_num=#{value} where info_name = #{name}
+    </update>
+</mapper>

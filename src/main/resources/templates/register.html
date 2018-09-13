@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--head部分-->
+<head  th:with="title='后台管理'">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+</head>
+<body style="width: 100%;height:auto;background: #00F7DE;background-size: 100%;">
+<div  style="height: 100%">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input id="user_name"  class="layui-input" type="text" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input id="user_pwd"  class="layui-input" type="password">
+        </div>
+    </div>
+    <button   id="user_login" onclick="login()">立即注册</button>
+</div>
+</body>
+<script type="application/javascript" src="../js/jquery.min.js"></script>
+<script th:inline="javascript">
+    function login() {
+        var data_login = {};
+        data_login ["user_name"] =document.getElementById("user_name").value;
+        data_login ["user_pwd"] =document.getElementById("user_pwd").value;
+        console.log(data_login);
+        $.post("/doregister",data_login,function (msg) {
+            console.log(msg);
+        })
+    }
+</script>
+</html>

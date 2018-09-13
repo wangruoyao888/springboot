@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Antd</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+</head>
+<body class="layui-anim layui-anim-upbit">
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe9aa;</i></a>
+</div>
+<div style="margin-left: 3%;margin-right: 3%">
+
+
+    <div class="layui-form-item" style="margin-top: 3%">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" id="user_name" autocomplete="off" class="layui-input" onblur="check()" >
+                <span id="useridSpan" style=" color:#F00">*6-12字母，数字组合</span>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" id="user_pwd" autocomplete="off" class="layui-input" onblur="checkpwd()">
+                <span id="pwdidSpan" style=" color:#F00"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<img id="img" style="width:100px;height:40px; margin-left:13%;" src="http://127.0.0.1:8089/user/check" onclick="changeimg()">
+</body>
+<script src="../layui-v2.3.0/layui/layui.all.js"></script>
+<script src="../layer-v3.1.1/layer/layer.js"></script>
+<script>
+    $(document).ready(function () {
+
+    });
+    layui.use(['layer','form'], function () {
+        var form = layui.form;
+        form.render();
+    });
+    function changeimg() {
+        console.log("123");
+        $.get("/user/check",function (msg) {
+            var date =new Date();
+            $("#img").attr("src","http://127.0.0.1:8089/user/check"+date);
+        });
+
+    }
+    function check() {
+        var attr = document.getElementById("user_name").value;
+        var span = document.getElementById("useridSpan");
+        var msg ="";
+        console.log("attr"+attr);
+        var checkrole= /^[a-z|A-Z][a-z|A-Z|0-9|_]{5,11}$/;
+            if (!attr){
+                msg = "用户名不能为空";
+                span.innerHTML =msg;
+            }
+            else if(!attr.match(checkrole)){
+                msg = "帐号必须为6-12位且开头必须为字母不能输入特殊字符仅支持下划线";
+                span.innerHTML =msg;
+            }else {
+                 msg ="success!!!!!!";
+                span.innerHTML =msg;
+            }
+    }
+    function checkpwd() {
+        /***
+         *最短6位，最长16位 {6,16}
+         * 必须包含1个数字
+         * 必须包含2个小写字母
+         *必须包含2个大写字母
+         * 必须包含1个特殊字符
+         */
+        var pattern = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z]{2,})(?=.*[a-z]{2,})(?=.*[!@#$%^&*?\(\)]).*$/;
+         var one =/^[0-9]{6,16}$/;
+        var tow =/^.*(?=.*[a-z])(?=.{6,16}).*$/;
+        var three =/^.*(?=.*\d)(?=.*[A-Z]{2,})(?=.*[a-z]{2,})(?=.*[!@#$%^&*?\(\)])(?=.{6,16}).*$/;
+        var attr = document.getElementById("user_pwd").value;
+        var span = document.getElementById("pwdidSpan");
+        var msg ="";
+        console.log("attr"+attr);
+        if (!attr){
+            msg = "密码不能为空";
+            span.innerHTML =msg;
+        }
+        else if(attr.match(three)){
+            msg = "强";
+            span.innerHTML =msg;
+        }else if(attr.match(tow)) {
+            msg ="中";
+            span.innerHTML =msg;
+        }else if(attr.match(one)){
+            msg ="弱";
+            span.innerHTML =msg;
+        }else {
+            msg ="密码不合格";
+            span.innerHTML =msg;
+        }
+    }
+</script>
+</html>

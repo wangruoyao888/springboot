@@ -1,0 +1,125 @@
+<html lang="en" xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <style>
+        .layui-table-view .layui-table td, .layui-table-view .layui-table th{
+            width: 10%;
+        }
+    </style>
+</head>
+
+<body class="layui-anim layui-anim-upbit">
+<script type="application/javascript" src="../js/jquery.min.js"></script>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe9aa;</i></a>
+</div>
+<div style="margin-left: 3%;margin-right: 3%">
+    <button class="layui-btn " onclick="add()" style="margin-top: 3%">添加用户</button>
+    <div class="layui-inline" >
+        <div style="margin-top: 12%">
+        <label class="layui-form-label" >用户信息</label>
+        <div class="layui-input-block">
+            <input id="search"  class="layui-input" type="text" >
+        </div>
+
+        </div>
+        <button class="layui-btn " onclick="serach()" style="margin-top:-13%;margin-left: 120%">搜索</button>
+        <button class="layui-btn " onclick="initTableData()" style="margin-top:-13%;margin-left: 150%">刷新</button>
+    </div>
+<table class="layui-hide" id="demo" lay-filter="user_table" >
+</table>
+    <!---------------------------添加弹出框--------------------------->
+    <div class="layui-form layui-form-pane" id="add" hidden>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input id="userName"  class="layui-input" type="text" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline">
+                    <input id="password" class="layui-input" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+<!---------------------------表格操作按钮--------------------------->
+<script type="text/html" id="barDemo" >
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!---------------------------查看弹出框--------------------------->
+<div class="layui-form layui-form-pane" id="detail" hidden>
+<div class="layui-form-item">
+    <label class="layui-form-label">用户名</label>
+    <div class="layui-input-block">
+        <input id="user_name"  class="layui-input" type="text" disabled>
+    </div>
+</div>
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label">用户信息</label>
+        <div class="layui-input-block">
+            <input id="user_info"  class="layui-input" type="text" disabled>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+            <input id="user_pwd" class="layui-input" type="text" disabled>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-------------------------------------编辑弹出框--------------------------------------------------->
+<div class="layui-form layui-form-pane" id="edit" hidden>
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input id="user_name_edit"  class="layui-input" type="text" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">用户信息</label>
+            <div class="layui-input-block">
+                <input id="user_info_edit"  class="layui-input" type="text" >
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input id="user_pwd_edit" class="layui-input" type="text" >
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../layui-v2.3.0/layui/layui.all.js"></script>
+<script src="../layer-v3.1.1/layer/layer.js"></script>
+<script src="../js/web/index.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        initTableData();
+    });
+</script>
+</html>

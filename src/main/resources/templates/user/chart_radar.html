@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/layui.css">
+    <link rel="stylesheet" href="../layui-v2.3.0/layui/css/modules/layer/default/layer.css">
+</head>
+
+<body class="layui-anim layui-anim-upbit">
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">&#xe9aa;</i></a>
+</div>
+<!-----------------------中间内容区域start-------------------------->
+<div id="w-body" style="margin-left: 3%;margin-right: 3%">
+
+        <div id="echart_one" class="layui-col-sm4 layui-col-md3 layui-col-lg2" style="width:80%; height: 400px;"></div>
+</div>
+<!-----------------------中间内容区域end-------------------------->
+</body>
+<script src="../layui-v2.3.0/layui/layui.all.js"></script>
+<script type="application/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/echarts.min.js"></script>
+<script src="../layer-v3.1.1/layer/layer.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        getEcharData()
+
+    });
+    function getEcharData() {
+        $.post("/user/getUserInfoNum",function (data) {
+            console.log(data);
+            initEchart();
+        });
+
+    }
+    function initEchart() {
+        var echart_one = echarts.init(document.getElementById("echart_one"));
+        //指定图标的配置和数据
+        option = {
+            title:{
+                text:'雷达图'
+            },
+            tooltip: {},
+            legend:{
+                data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
+            },
+            radar:{
+               name:{
+                   textStyle: {
+                       color: '#fff',
+                       backgroundColor: '#999',
+                       borderRadius: 3,
+                   }
+               },
+                indicator: [
+                    { name: '销售（sales）', max: 6500},
+                    { name: '管理（Administration）', max: 16000},
+                    { name: '信息技术（Information Techology）', max: 30000},
+                    { name: '客服（Customer Support）', max: 38000},
+                    { name: '研发（Development）', max: 52000},
+                    { name: '市场（Marketing）', max: 25000}
+                ]
+
+            },
+            series:[{
+                name: '预算 vs 开销（Budget vs spending）',
+                type: 'radar',
+                data : [
+                    {
+                        value : [4300, 10000, 28000, 35000, 50000, 19000],
+                        name : '预算分配（Allocated Budget）'
+                    },
+                    {
+                        value : [5000, 14000, 28000, 31000, 42000, 21000],
+                        name : '实际开销（Actual Spending）'
+                    }
+                ]
+            }]
+        };
+        //使用制定的配置项和数据显示图表
+        echart_one.setOption(option);
+
+    }
+</script>
+</html>
