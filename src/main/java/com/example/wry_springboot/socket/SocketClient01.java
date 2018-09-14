@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketClient01  {
-    private int port = 8080;
+    private int port = 8082;
     Socket socket =null;
 
 
