@@ -2,9 +2,6 @@ package com.example.wry_springboot.config;
 
 import com.example.wry_springboot.index.db.entity.IndexEntity;
 import com.example.wry_springboot.index.db.service.IndexService;
-import com.example.wry_springboot.index.db.service.impl.IndexServiceImpl;
-import com.example.wry_springboot.user.db.entity.UserEntity;
-import com.example.wry_springboot.user.db.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -13,12 +10,14 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.commons.codec.digest.DigestUtils;
 
-import javax.annotation.Resource;
+import java.util.Collection;
 
 @Slf4j
 public class ShiroRealm extends AuthorizingRealm {
@@ -60,6 +59,16 @@ public class ShiroRealm extends AuthorizingRealm {
         //UsernamePasswordToken用于存放提交的登录信息
         UsernamePasswordToken token = (UsernamePasswordToken)authenticationToken;
         String user_name =token.getUsername();
+        Session sessionlocal = SecurityUtils.getSubject().getSession();
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        Collection<Session> sessions = sessionManager.getSessionDAO().getActiveSessions();
+        for(Session session1 : sessions){
+            if (user_name.equals(String.valueOf(session1.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY)))){
+                if(!sessionlocal.getId().equals(session1.getId())){
+                    sessionManager.getSessionDAO().delete(session1);
+                }
+            }
+        }
         // 调用数据层
         IndexEntity indexEntity = indexServiceImpl.getUserByName(user_name);
         log.info("用户登录认证：验证当前Subject时获取到token为：" + ReflectionToStringBuilder
